@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="LayoutTest.Features.PrepareFiles.ThumbnailListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:LayoutTest.Converters"
+             xmlns:prepareFiles="clr-namespace:LayoutTest.Features.PrepareFiles"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" 
+             d:DataContext="{Binding Source={d:DesignInstance prepareFiles:ThumbnailListViewModel}, 
+                                     Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
+    <ListView ItemsSource="{Binding Path=Thumbnails}" SelectedItem="{Binding Path=SelectedItem}"
+              Grid.IsSharedSizeScope="True">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="A"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="B"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="C"/>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="D"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Background="LightGreen" Grid.Column="0" Margin="2,0,0,0" 
+                            Visibility="{Binding Path=Select1, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Label Content="{Binding Path=PageNumber}" Width="4" 
+                               Visibility="Hidden" >
+                        </Label>
+                    </Border>
+                    <Border Background="MediumPurple" Grid.Column="1" Margin="2,0,0,0"
+                            Visibility="{Binding Path=Select2, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Label Content="{Binding Path=PageNumber}" Width="4" 
+                               Visibility="Hidden" >
+                        </Label>
+                    </Border>
+                    <Border Grid.Column="2" BorderBrush="Blue"
+                            
+                            BorderThickness="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}},
+                                                      Path=IsSelected,
+                                                      Converter={StaticResource BoolToIntConverter},
+                                                      ConverterParameter=2}" Margin="2,0,2,0">
+                        <Label Content="{Binding Path=PageNumber}" HorizontalAlignment="Center" >
+                        </Label>
+                    </Border>
+                    <Border Background="Red" Grid.Column="3" >
+                        <Label Content="{Binding Path=PageNumber}" Width="4" 
+                               Visibility="Hidden" >
+                        </Label>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</UserControl>
+
