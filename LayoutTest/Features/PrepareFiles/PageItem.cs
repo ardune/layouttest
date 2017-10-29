@@ -1,54 +1,37 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Input;
+using Caliburn.Micro;
+using LayoutTest.Features.Shared;
 
 namespace LayoutTest.Features.PrepareFiles
 {
     public class PageItem : PropertyChangedBase
     {
-        private int pageNumber;
-        private bool isDeleted;
-        private bool select1;
-        private bool select2;
+        private bool isSelected;
 
-        public int PageNumber
+        public PageItem()
         {
-            get { return pageNumber; }
-            set
-            {
-                if (value == pageNumber) return;
-                pageNumber = value;
-                NotifyOfPropertyChange();
-            }
+        }
+        public PageItem(Page x)
+        {
+            IsDeleted = x.IsDeleted;
+            PageNumber = x.PageNumber;
         }
 
-        public bool IsDeleted
-        {
-            get { return isDeleted; }
-            set
-            {
-                if (value == isDeleted) return;
-                isDeleted = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public int PageNumber { get; set; }
 
-        public bool Select1
-        {
-            get { return select1; }
-            set
-            {
-                if (value == select1) return;
-                select1 = value;
-                NotifyOfPropertyChange();
-            }
-        }
+        public bool IsDeleted { get; set; }
 
-        public bool Select2
+        public bool Select1 { get; set; }
+
+        public bool Select2 { get; set; }
+
+        public bool IsSelected
         {
-            get { return select2; }
+            get { return isSelected; }
             set
             {
-                if (value == select2) return;
-                select2 = value;
+                if (value == isSelected) return;
+                isSelected = value;
                 NotifyOfPropertyChange();
             }
         }

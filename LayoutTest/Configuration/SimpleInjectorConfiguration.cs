@@ -22,6 +22,7 @@ namespace LayoutTest.Configuration
                 container.Register(screen);
             }
 
+            container.Register<AppStateHolder>(Lifestyle.Singleton);
             container.Register<IWindowManager,WindowManager>(Lifestyle.Singleton);
             container.Register<IEventAggregator, EventAggregator>(Lifestyle.Singleton);
             container.Register<IViewModelLocator>(()=>new ContainerViewModelLocator(container));

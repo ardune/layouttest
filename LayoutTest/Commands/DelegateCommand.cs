@@ -5,15 +5,13 @@ namespace LayoutTest.Commands
 {
     public class DelegateCommand : DelegateCommand<object>
     {
-
-
         public DelegateCommand(Action action)
             : this(action,()=>true)
         {
         }
 
         public DelegateCommand(Action action, Func<bool> canExecute)
-            : base(x=>action(), canExecute)
+            : base(x=>action(), x => canExecute())
         {
         }
     }
@@ -23,15 +21,15 @@ namespace LayoutTest.Commands
         public event EventHandler CanExecuteChanged;
 
         private readonly Action<T> action;
-        private readonly Func<bool> canExecute;
+        private readonly Func<T,bool> canExecute;
 
         public DelegateCommand(Action<T> action)
-            : this(action, ()=>true)
+            : this(action, x=>true)
         {
             
         }
 
-        public DelegateCommand(Action<T> action, Func<bool> canExecute)
+        public DelegateCommand(Action<T> action, Func<T,bool> canExecute)
         {
             this.action = action;
             this.canExecute = canExecute;
@@ -40,7 +38,12 @@ namespace LayoutTest.Commands
 
         public bool CanExecute(object parameter)
         {
-            return canExecute();
+            if (parameter is T matched)
+            {
+                return canExecute(matched);
+            }
+
+            return canExecute(default(T));
         }
 
         public void Execute(object parameter)
@@ -56,7 +59,7 @@ namespace LayoutTest.Commands
 
         public void RaiseCanExecuteChanged()
         {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            //CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Caliburn.Micro;
 using LayoutTest.Commands;
@@ -8,49 +11,95 @@ using LayoutTest.Features.Shared;
 
 namespace LayoutTest.Features.PrepareFiles
 {
-    public class PrepareFilesViewModel : Screen, IViewModel
+    public class PrepareFilesViewModel : ScreenBase, IViewModel
     {
+        private readonly AppStateHolder appStateHolder;
+        private List<IDisposable> subscriptions;
+
         public PrepareFilesViewModel(
             ThumbnailListViewModel thumbnailListViewModel, 
             RenderPageViewModel renderPageViewModel, 
-            FlyinBarViewModel flyinBarViewModel)
+            FlyinBarViewModel flyinBarViewModel,
+            AppStateHolder appStateHolder)
         {
+            this.appStateHolder = appStateHolder;
             ThumbnailListViewModel = thumbnailListViewModel;
             RenderPageViewModel = renderPageViewModel;
             FlyinBarViewModel = flyinBarViewModel;
+
+
+            ThumbnailListViewModel.ActivateWith(this);
+            ThumbnailListViewModel.DeactivateWith(this);
+            FlyinBarViewModel.ActivateWith(this);
+            FlyinBarViewModel.DeactivateWith(this);
 
             ShowDetailsCommand = new DelegateCommand<DetailsViewModel>(ShowingDetais);
 
             FlyinBarViewModel.AddTab<DetailsViewModel>("D - Details", ShowDetailsCommand);
 
-            AddPageCommand = new DelegateCommand(AddPage);
-            RemovePageCommand = new DelegateCommand(RemoveSelectedPage, () => ThumbnailListViewModel.SelectedItem != null);
-            ThumbnailListViewModel.BindTo(x => x.SelectedItem, SelectionChanged);
+            AddPageCommand = new AsyncDelegateCommand(AddPage);
+            RemovePageCommand = new AsyncDelegateCommand(RemoveSelectedPage, () => CurrentState.PrimaryPageSelectionIndex.HasValue);
         }
+
+        private AppState CurrentState => appStateHolder.LatestState;
+        
 
         private void ShowingDetais(DetailsViewModel obj)
         {
             obj.DisplayName = "Foo";
         }
 
-        public DelegateCommand<DetailsViewModel> ShowDetailsCommand { get; }
-        
-
-        private void RemoveSelectedPage()
+        protected override void OnActivate()
         {
-            var item = ThumbnailListViewModel.SelectedItem;
-            item.IsDeleted = !item.IsDeleted;
+            subscriptions = new List<IDisposable>
+            {
+                appStateHolder
+                    .Project(x => x.PrimaryPageSelectionIndex)
+                    .SubscribeWith(IndexChanged)
+            };
+            base.OnActivate();
         }
 
-        private void AddPage()
+        private void IndexChanged(int? obj)
         {
-            for (int i = 0; i < 1000; i++)
+            RemovePageCommand.RaiseCanExecuteChanged();
+        }
+
+        public DelegateCommand<DetailsViewModel> ShowDetailsCommand { get; }
+
+        private async Task RemoveSelectedPage()
+        {
+            await appStateHolder.UpdateState(x =>
             {
-                ThumbnailListViewModel.Thumbnails.Add(new PageItem
+                if (x.PrimaryPageSelectionIndex == null)
                 {
-                    PageNumber = (ThumbnailListViewModel.Thumbnails.LastOrDefault()?.PageNumber).GetValueOrDefault(0) + 1
+                    return x;
+                }
+                var page = x.Pages[x.PrimaryPageSelectionIndex.Value];
+                x.Pages = x.Pages.Update(page, new
+                {
+                    IsDeleted = !page.IsDeleted
                 });
-            }
+                return x;
+            });
+        }
+
+        private async Task AddPage()
+        {
+            await appStateHolder.UpdateState(x =>
+            {
+                var newPageNumber = x.Pages.Max(y => (int?)y.PageNumber).GetValueOrDefault(0) + 1;
+
+                x.Pages = x.Pages.Concat(Enumerable.Range(0, 1000).Select(i =>
+                    new Page
+                    {
+                        PageNumber = newPageNumber + i
+                    }
+                )).ToArray();
+
+                return x;
+            });
+
         }
 
         public ThumbnailListViewModel ThumbnailListViewModel { get; }
@@ -62,17 +111,5 @@ namespace LayoutTest.Features.PrepareFiles
         public ICommand RemovePageCommand { get; set; }
 
         public FlyinBarViewModel FlyinBarViewModel { get; }
-
-        private void SelectionChanged(PageItem obj)
-        {
-            RenderPageViewModel.TargetItem = obj;
-            RemovePageCommand.RaiseCanExecuteChanged();
-        }
-
-        protected override void OnActivate()
-        {
-            RenderPageViewModel.TargetItem = ThumbnailListViewModel.SelectedItem;
-            base.OnActivate();
-        }
     }
 }
