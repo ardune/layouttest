@@ -73,6 +73,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Extensions\BindingExtensions.cs" />
+    <Compile Include="Features\PrepareFiles\PageItem.cs" />
+    <Compile Include="Features\PrepareFiles\RenderPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Bootstrapper.cs" />
@@ -83,11 +86,17 @@
     <Compile Include="Features\PrepareFiles\PrepareFilesView.xaml.cs">
       <DependentUpon>PrepareFilesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\PrepareFiles\RenderPageView.xaml.cs">
+      <DependentUpon>RenderPageView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\PrepareFiles\ThumbnailListView.xaml.cs">
       <DependentUpon>ThumbnailListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\PrepareFiles\ThumbnailListViewModel.cs" />
     <Compile Include="Features\Shared\IViewModel.cs" />
+    <Compile Include="Features\Shared\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Features\Shell\ContainerViewModelLocator.cs" />
     <Compile Include="Features\Shell\IViewModelLocator.cs" />
     <Compile Include="Features\Shell\MultiWindowManager.cs" />
@@ -126,7 +135,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Features\PrepareFiles\RenderPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Features\PrepareFiles\ThumbnailListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\Shared\Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

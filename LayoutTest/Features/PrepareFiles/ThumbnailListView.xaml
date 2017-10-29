@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:LayoutTest.Converters"
              xmlns:prepareFiles="clr-namespace:LayoutTest.Features.PrepareFiles"
              mc:Ignorable="d" 
-             d:DesignHeight="500" 
+             d:DesignHeight="500"
              d:DataContext="{Binding Source={d:DesignInstance prepareFiles:ThumbnailListViewModel}, 
                                      Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
     <ListView ItemsSource="{Binding Path=Thumbnails}" SelectedItem="{Binding Path=SelectedItem}"
@@ -20,6 +20,9 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="C"/>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="D"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" SharedSizeGroup="R1"/>
+                    </Grid.RowDefinitions>
 
                     <Border Background="LightGreen" Grid.Column="0" Margin="2,0,0,0" 
                             Visibility="{Binding Path=Select1, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -34,7 +37,6 @@
                         </Label>
                     </Border>
                     <Border Grid.Column="2" BorderBrush="Blue"
-                            
                             BorderThickness="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}},
                                                       Path=IsSelected,
                                                       Converter={StaticResource BoolToIntConverter},
@@ -42,7 +44,7 @@
                         <Label Content="{Binding Path=PageNumber}" HorizontalAlignment="Center" >
                         </Label>
                     </Border>
-                    <Border Background="Red" Grid.Column="3" >
+                    <Border Background="Red" Grid.Column="3" Visibility="{Binding Path=IsDeleted, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Label Content="{Binding Path=PageNumber}" Width="4" 
                                Visibility="Hidden" >
                         </Label>

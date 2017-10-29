@@ -6,15 +6,30 @@
              xmlns:prepareFiles="clr-namespace:LayoutTest.Features.PrepareFiles"
              xmlns:converters="clr-namespace:LayoutTest.Converters"
              mc:Ignorable="d"
+             d:DesignHeight="600"
              d:DataContext="{Binding Source={d:DesignInstance prepareFiles:PrepareFilesViewModel}, 
                                      Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <prepareFiles:ThumbnailListView
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.ColumnSpan="2">
+            <MenuItem Header="Add" Command="{Binding Path=AddPageCommand}"></MenuItem>
+            <MenuItem Header="Remove"></MenuItem>
+        </Menu>
+        <prepareFiles:ThumbnailListView 
+            Grid.Row="1" Grid.Column="0"
+            Width="100"
             DataContext="{Binding Path=ThumbnailListViewModel}">
         </prepareFiles:ThumbnailListView>
+        <prepareFiles:RenderPageView 
+            Grid.Row="1" Grid.Column="1"
+            DataContext="{Binding Path=RenderPageViewModel}">
+        </prepareFiles:RenderPageView>
     </Grid>
 </UserControl>

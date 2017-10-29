@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="LayoutTest.Features.PrepareFiles.RenderPageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:LayoutTest.Converters"
+             xmlns:prepareFiles="clr-namespace:LayoutTest.Features.PrepareFiles"
+             mc:Ignorable="d" 
+             d:DataContext="{Binding Source={d:DesignInstance prepareFiles:RenderPageViewModel}, 
+                                     Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
+    <Label Content="{Binding Path=TargetItem.PageNumber}"/>
+</UserControl>

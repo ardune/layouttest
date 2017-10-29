@@ -1,22 +1,82 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
+using LayoutTest.Extensions;
 using LayoutTest.Features.Shared;
+using Action = System.Action;
 
 namespace LayoutTest.Features.PrepareFiles
 {
     public class PrepareFilesViewModel : Screen, IViewModel
     {
-        public ThumbnailListViewModel ThumbnailListViewModel { get; }
-
-        public PrepareFilesViewModel(ThumbnailListViewModel thumbnailListViewModel)
+        public PrepareFilesViewModel(
+            ThumbnailListViewModel thumbnailListViewModel, 
+            RenderPageViewModel renderPageViewModel)
         {
             ThumbnailListViewModel = thumbnailListViewModel;
+            RenderPageViewModel = renderPageViewModel;
+
+            AddPageCommand = new DelegateCommand(AddPage);
+            ThumbnailListViewModel.BindTo(x => x.SelectedItem, SelectionChanged);
+        }
+
+        private void AddPage()
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                ThumbnailListViewModel.Thumbnails.Add(new PageItem
+                {
+                    PageNumber = (ThumbnailListViewModel.Thumbnails.LastOrDefault()?.PageNumber).GetValueOrDefault(0) + 1
+                });
+            }
+        }
+
+        public ThumbnailListViewModel ThumbnailListViewModel { get; }
+
+        public RenderPageViewModel RenderPageViewModel { get; }
+
+        public ICommand AddPageCommand { get; set; }
+
+        private void SelectionChanged(PageItem obj)
+        {
+            RenderPageViewModel.TargetItem = obj;
         }
 
         protected override void OnActivate()
         {
-            DisplayName = "asd";
+            RenderPageViewModel.TargetItem = ThumbnailListViewModel.SelectedItem;
 
             base.OnActivate();
+        }
+    }
+
+    public class DelegateCommand : ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+
+        private readonly Action action;
+        private readonly Func<bool> canExecute;
+
+        public DelegateCommand(Action action)
+            : this(action,()=>true)
+        {
+        }
+
+        public DelegateCommand(Action action,Func<bool> canExecute)
+        {
+            this.action = action;
+            this.canExecute = canExecute;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return canExecute();
+        }
+
+        public void Execute(object parameter)
+        {
+            action();
         }
     }
 }
