@@ -40,7 +40,7 @@ namespace LayoutTest.Converters
 
             if (fullType == null)
             {
-                throw new Exception("Could not locate valid type from " + value);
+                throw new Exception("Could not locate valid type from " + value + "\r\nMake sure it inhertis from IViewModel");
             }
             var instance = IoC.GetInstance(fullType, null);
             if (instance is IActivate activate)

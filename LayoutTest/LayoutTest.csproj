@@ -73,11 +73,22 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Collections\IReadOnlyBindableCollection.cs" />
+    <Compile Include="Collections\ReadOnlyBindableCollection.cs" />
+    <Compile Include="Commands\BypassExecuteCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\IRaiseCanExecuteChanged.cs" />
     <Compile Include="Converters\ThrowExceptionConverter.cs" />
     <Compile Include="Extensions\BindingExtensions.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
+    <Compile Include="Features\Flyin\FlyinBarView.xaml.cs">
+      <DependentUpon>FlyinBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\Flyin\FlyinBarViewModel.cs" />
+    <Compile Include="Features\PrepareFiles\DetailsView.xaml.cs">
+      <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Features\PrepareFiles\DetailsViewModel.cs" />
     <Compile Include="Features\PrepareFiles\PageItem.cs" />
     <Compile Include="Features\PrepareFiles\RenderPageViewModel.cs" />
   </ItemGroup>
@@ -93,6 +104,7 @@
     <Compile Include="Features\PrepareFiles\RenderPageView.xaml.cs">
       <DependentUpon>RenderPageView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Features\Flyin\SavedTab.cs" />
     <Compile Include="Features\PrepareFiles\ThumbnailListView.xaml.cs">
       <DependentUpon>ThumbnailListView.xaml</DependentUpon>
     </Compile>
@@ -135,6 +147,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Features\Flyin\FlyinBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Features\PrepareFiles\DetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Features\PrepareFiles\PrepareFilesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

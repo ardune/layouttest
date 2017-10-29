@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using LayoutTest.Commands;
 using LayoutTest.Extensions;
+using LayoutTest.Features.Flyin;
 using LayoutTest.Features.Shared;
 
 namespace LayoutTest.Features.PrepareFiles
@@ -11,15 +12,29 @@ namespace LayoutTest.Features.PrepareFiles
     {
         public PrepareFilesViewModel(
             ThumbnailListViewModel thumbnailListViewModel, 
-            RenderPageViewModel renderPageViewModel)
+            RenderPageViewModel renderPageViewModel, 
+            FlyinBarViewModel flyinBarViewModel)
         {
             ThumbnailListViewModel = thumbnailListViewModel;
             RenderPageViewModel = renderPageViewModel;
+            FlyinBarViewModel = flyinBarViewModel;
+
+            ShowDetailsCommand = new DelegateCommand<DetailsViewModel>(ShowingDetais);
+
+            FlyinBarViewModel.AddTab<DetailsViewModel>("D - Details", ShowDetailsCommand);
 
             AddPageCommand = new DelegateCommand(AddPage);
             RemovePageCommand = new DelegateCommand(RemoveSelectedPage, () => ThumbnailListViewModel.SelectedItem != null);
             ThumbnailListViewModel.BindTo(x => x.SelectedItem, SelectionChanged);
         }
+
+        private void ShowingDetais(DetailsViewModel obj)
+        {
+            obj.DisplayName = "Foo";
+        }
+
+        public DelegateCommand<DetailsViewModel> ShowDetailsCommand { get; }
+        
 
         private void RemoveSelectedPage()
         {
@@ -46,6 +61,8 @@ namespace LayoutTest.Features.PrepareFiles
 
         public ICommand RemovePageCommand { get; set; }
 
+        public FlyinBarViewModel FlyinBarViewModel { get; }
+
         private void SelectionChanged(PageItem obj)
         {
             RenderPageViewModel.TargetItem = obj;
@@ -55,7 +72,6 @@ namespace LayoutTest.Features.PrepareFiles
         protected override void OnActivate()
         {
             RenderPageViewModel.TargetItem = ThumbnailListViewModel.SelectedItem;
-
             base.OnActivate();
         }
     }

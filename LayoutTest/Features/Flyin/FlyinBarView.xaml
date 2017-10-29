@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="LayoutTest.Features.Flyin.FlyinBarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cal="http://www.caliburnproject.org"
+             xmlns:converters="clr-namespace:LayoutTest.Converters"
+             xmlns:flyin="clr-namespace:LayoutTest.Features.Flyin"
+             mc:Ignorable="d"
+             d:DataContext="{Binding Source={d:DesignInstance flyin:FlyinBarViewModel}, Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}"
+             d:DesignHeight="500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <ContentControl cal:View.Model="{Binding Path=ActiveItem}"/>
+        <ListView Grid.Column="1" ItemsSource="{Binding Path=Tabs}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Style.Setters>
+                        <Setter Property="Margin" Value="2,4,2,4"></Setter>
+                    </Style.Setters>
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Button Content="{Binding Path=Titled}"
+                                Command="{Binding Path=OpenOpenCommand}">
+                            <Button.LayoutTransform>
+                                <RotateTransform Angle="90" />
+                            </Button.LayoutTransform>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

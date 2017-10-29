@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:prepareFiles="clr-namespace:LayoutTest.Features.PrepareFiles"
              xmlns:converters="clr-namespace:LayoutTest.Converters"
+             xmlns:flyin="clr-namespace:LayoutTest.Features.Flyin"
              mc:Ignorable="d"
              d:DataContext="{Binding Source={d:DesignInstance prepareFiles:PrepareFilesViewModel}, Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}"
              d:DesignHeight="600">
@@ -16,6 +17,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -41,5 +43,9 @@
                        Visibility="{Binding Path=RenderPageViewModel.TargetItem.IsDeleted, FallbackValue=Hidden, Converter={StaticResource BooleanToVisibilityConverter}}">
             </Rectangle>
         </Grid>
+        <flyin:FlyinBarView Grid.Row="1" Grid.Column="2"
+            DataContext="{Binding Path=FlyinBarViewModel}">
+        </flyin:FlyinBarView>
     </Grid>
 </UserControl>
+
