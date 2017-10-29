@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using LayoutTest.Commands;
 using LayoutTest.Extensions;
 using LayoutTest.Features.Shared;
+using LayoutTest.Features.Shared.State;
 
 namespace LayoutTest.Features.PrepareFiles
 {
@@ -27,7 +28,7 @@ namespace LayoutTest.Features.PrepareFiles
             {
                 appState.Project(x => x.Pages)
                     .Subscribe(NewPages),
-                appState.Project(x => x.PrimaryPageSelectionIndex)
+                appState.Project(x => x.PrepActivity.PrimaryPageSelectionIndex)
                     .SubscribeWith(OnPrimaryPageSelectionIndexChanged)
             };
             
@@ -56,7 +57,9 @@ namespace LayoutTest.Features.PrepareFiles
             await appState.UpdateState(x =>
             {
                 Trace.WriteLine("Change Selection: " + index);
-                x.PrimaryPageSelectionIndex = index < 0 ? null : index;
+                var activity = x.PrepActivity;
+                activity.PrimaryPageSelectionIndex = index < 0 ? null : index;
+                x.PrepActivity = activity;
                 return x;
             });
         }
@@ -65,7 +68,7 @@ namespace LayoutTest.Features.PrepareFiles
         {
             Trace.WriteLine("OnPrimaryPageSelectionIndexChanged: " + i);
 
-            var selected = appState.LatestState.PrimaryPageSelectionIndex;
+            var selected = appState.LatestState.PrepActivity.PrimaryPageSelectionIndex;
             for (var index = 0; index < Thumbnails.Count; index++)
             {
                 var thumbnail = Thumbnails[index];
@@ -76,7 +79,7 @@ namespace LayoutTest.Features.PrepareFiles
         private void NewPages(Page[] obj)
         {
             Trace.WriteLine("List changed: ");
-            var selected = appState.LatestState.PrimaryPageSelectionIndex;
+            var selected = appState.LatestState.PrepActivity.PrimaryPageSelectionIndex;
             var newPages = obj.Select((x,i) => new PageItem(x)
             {
                 IsSelected = i == selected

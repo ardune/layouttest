@@ -8,6 +8,7 @@ using LayoutTest.Commands;
 using LayoutTest.Extensions;
 using LayoutTest.Features.Flyin;
 using LayoutTest.Features.Shared;
+using LayoutTest.Features.Shared.State;
 
 namespace LayoutTest.Features.PrepareFiles
 {
@@ -27,7 +28,6 @@ namespace LayoutTest.Features.PrepareFiles
             RenderPageViewModel = renderPageViewModel;
             FlyinBarViewModel = flyinBarViewModel;
 
-
             ThumbnailListViewModel.ActivateWith(this);
             ThumbnailListViewModel.DeactivateWith(this);
             FlyinBarViewModel.ActivateWith(this);
@@ -38,15 +38,14 @@ namespace LayoutTest.Features.PrepareFiles
             FlyinBarViewModel.AddTab<DetailsViewModel>("D - Details", ShowDetailsCommand);
 
             AddPageCommand = new AsyncDelegateCommand(AddPage);
-            RemovePageCommand = new AsyncDelegateCommand(RemoveSelectedPage, () => CurrentState.PrimaryPageSelectionIndex.HasValue);
+
+            RemovePageCommand = new AsyncDelegateCommand(RemoveSelectedPage, () => CurrentState.PrepActivity.PrimaryPageSelectionIndex != null);
         }
 
         private AppState CurrentState => appStateHolder.LatestState;
-        
 
         private void ShowingDetais(DetailsViewModel obj)
         {
-            obj.DisplayName = "Foo";
         }
 
         protected override void OnActivate()
@@ -54,7 +53,7 @@ namespace LayoutTest.Features.PrepareFiles
             subscriptions = new List<IDisposable>
             {
                 appStateHolder
-                    .Project(x => x.PrimaryPageSelectionIndex)
+                    .Project(x => x.PrepActivity.PrimaryPageSelectionIndex)
                     .SubscribeWith(IndexChanged)
             };
             base.OnActivate();
@@ -71,11 +70,11 @@ namespace LayoutTest.Features.PrepareFiles
         {
             await appStateHolder.UpdateState(x =>
             {
-                if (x.PrimaryPageSelectionIndex == null)
+                if (x.PrepActivity.PrimaryPageSelectionIndex == null)
                 {
                     return x;
                 }
-                var page = x.Pages[x.PrimaryPageSelectionIndex.Value];
+                var page = x.Pages[x.PrepActivity.PrimaryPageSelectionIndex.Value];
                 x.Pages = x.Pages.Update(page, new
                 {
                     IsDeleted = !page.IsDeleted

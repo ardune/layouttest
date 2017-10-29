@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
+using Caliburn.Micro;
+using Action = System.Action;
 
 namespace LayoutTest.Commands
 {
@@ -59,7 +61,7 @@ namespace LayoutTest.Commands
 
         public void RaiseCanExecuteChanged()
         {
-            //CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

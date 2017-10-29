@@ -107,6 +107,13 @@
     <Compile Include="Features\PrepareFiles\DetailsViewModel.cs" />
     <Compile Include="Features\PrepareFiles\PageItem.cs" />
     <Compile Include="Features\PrepareFiles\RenderPageViewModel.cs" />
+    <Compile Include="Features\Shared\State\AppState.cs" />
+    <Compile Include="Features\Shared\State\AppStateBuilder.cs" />
+    <Compile Include="Features\Shared\State\AppStateHolder.cs" />
+    <Compile Include="Features\Shared\State\Page.cs" />
+    <Compile Include="Features\Shared\State\PrepActivity.cs" />
+    <Compile Include="StateManagement\IHeldStateBuilder.cs" />
+    <Compile Include="StateManagement\StateHolder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Bootstrapper.cs" />
@@ -125,7 +132,6 @@
       <DependentUpon>ThumbnailListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Features\PrepareFiles\ThumbnailListViewModel.cs" />
-    <Compile Include="Features\Shared\AppState.cs" />
     <Compile Include="Features\Shared\IViewModel.cs" />
     <Compile Include="Features\Shared\ScreenBase.cs" />
     <Compile Include="Features\Shared\Window1.xaml.cs">

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using LayoutTest.Features.Shared;
+using LayoutTest.Features.Shared.State;
 using LayoutTest.Features.Shell;
 using SimpleInjector;
 

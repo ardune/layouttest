@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Caliburn.Micro;
 using LayoutTest.Features.Shared;
+using LayoutTest.Features.Shared.State;
 
 namespace LayoutTest.Features.PrepareFiles
 {
