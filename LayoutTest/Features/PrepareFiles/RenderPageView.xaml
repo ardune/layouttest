@@ -6,7 +6,6 @@
              xmlns:converters="clr-namespace:LayoutTest.Converters"
              xmlns:prepareFiles="clr-namespace:LayoutTest.Features.PrepareFiles"
              mc:Ignorable="d" 
-             d:DataContext="{Binding Source={d:DesignInstance prepareFiles:RenderPageViewModel}, 
-                                     Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
+             d:DataContext="{Binding Source={d:DesignInstance prepareFiles:RenderPageViewModel}, Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
     <Label Content="{Binding Path=TargetItem.PageNumber}"/>
 </UserControl>

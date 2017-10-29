@@ -6,9 +6,8 @@
              xmlns:prepareFiles="clr-namespace:LayoutTest.Features.PrepareFiles"
              xmlns:converters="clr-namespace:LayoutTest.Converters"
              mc:Ignorable="d"
-             d:DesignHeight="600"
-             d:DataContext="{Binding Source={d:DesignInstance prepareFiles:PrepareFilesViewModel}, 
-                                     Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
+             d:DataContext="{Binding Source={d:DesignInstance prepareFiles:PrepareFilesViewModel}, Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}"
+             d:DesignHeight="600">
     <UserControl.InputBindings>
         <KeyBinding Key="I" Command="{Binding Path=AddPageCommand}"></KeyBinding>
         <KeyBinding Key="Delete" Command="{Binding Path=RemovePageCommand}"></KeyBinding>
@@ -31,9 +30,16 @@
             Width="100"
             DataContext="{Binding Path=ThumbnailListViewModel}">
         </prepareFiles:ThumbnailListView>
-        <prepareFiles:RenderPageView 
-            Grid.Row="1" Grid.Column="1"
-            DataContext="{Binding Path=RenderPageViewModel}">
-        </prepareFiles:RenderPageView>
+        <Grid Grid.Row="1" Grid.Column="1">
+
+            <prepareFiles:RenderPageView 
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                DataContext="{Binding Path=RenderPageViewModel}">
+            </prepareFiles:RenderPageView>
+            <Rectangle Fill="Red" Opacity="0.2"
+                       Visibility="{Binding Path=RenderPageViewModel.TargetItem.IsDeleted, FallbackValue=Hidden, Converter={StaticResource BooleanToVisibilityConverter}}">
+            </Rectangle>
+        </Grid>
     </Grid>
 </UserControl>

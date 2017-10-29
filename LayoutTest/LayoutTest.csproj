@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\IRaiseCanExecuteChanged.cs" />
+    <Compile Include="Converters\ThrowExceptionConverter.cs" />
     <Compile Include="Extensions\BindingExtensions.cs" />
     <Compile Include="Extensions\CommandExtensions.cs" />
     <Compile Include="Features\PrepareFiles\PageItem.cs" />

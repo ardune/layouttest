@@ -15,6 +15,7 @@
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:BoolToIntConverter x:Key="BoolToIntConverter" />
+            <converters:ThrowExceptionConverter x:Key="ThrowExceptionConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
