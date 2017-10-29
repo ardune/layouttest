@@ -9,6 +9,10 @@
              d:DesignHeight="600"
              d:DataContext="{Binding Source={d:DesignInstance prepareFiles:PrepareFilesViewModel}, 
                                      Converter={x:Static converters:DesignTimeViewModelLocator.Instance}}">
+    <UserControl.InputBindings>
+        <KeyBinding Key="I" Command="{Binding Path=AddPageCommand}"></KeyBinding>
+        <KeyBinding Key="Delete" Command="{Binding Path=RemovePageCommand}"></KeyBinding>
+    </UserControl.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
@@ -20,7 +24,7 @@
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="2">
             <MenuItem Header="Add" Command="{Binding Path=AddPageCommand}"></MenuItem>
-            <MenuItem Header="Remove"></MenuItem>
+            <MenuItem Header="Remove" Command="{Binding Path=RemovePageCommand}"></MenuItem>
         </Menu>
         <prepareFiles:ThumbnailListView 
             Grid.Row="1" Grid.Column="0"

@@ -22,7 +22,6 @@
                         <ColumnDefinition Width="Auto" SharedSizeGroup="C"/>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="D"/>
                     </Grid.ColumnDefinitions>
-
                     <Border Background="LightGreen" Grid.Column="0" Margin="2,0,0,0" 
                             Visibility="{Binding Path=Select1, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Label Content="{Binding Path=PageNumber}" Width="4" 

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using LayoutTest.Commands;
 using LayoutTest.Extensions;
 using LayoutTest.Features.Shared;
-using Action = System.Action;
 
 namespace LayoutTest.Features.PrepareFiles
 {
@@ -18,7 +17,14 @@ namespace LayoutTest.Features.PrepareFiles
             RenderPageViewModel = renderPageViewModel;
 
             AddPageCommand = new DelegateCommand(AddPage);
+            RemovePageCommand = new DelegateCommand(RemoveSelectedPage, () => ThumbnailListViewModel.SelectedItem != null);
             ThumbnailListViewModel.BindTo(x => x.SelectedItem, SelectionChanged);
+        }
+
+        private void RemoveSelectedPage()
+        {
+            var item = ThumbnailListViewModel.SelectedItem;
+            item.IsDeleted = !item.IsDeleted;
         }
 
         private void AddPage()
@@ -38,9 +44,12 @@ namespace LayoutTest.Features.PrepareFiles
 
         public ICommand AddPageCommand { get; set; }
 
+        public ICommand RemovePageCommand { get; set; }
+
         private void SelectionChanged(PageItem obj)
         {
             RenderPageViewModel.TargetItem = obj;
+            RemovePageCommand.RaiseCanExecuteChanged();
         }
 
         protected override void OnActivate()
@@ -48,35 +57,6 @@ namespace LayoutTest.Features.PrepareFiles
             RenderPageViewModel.TargetItem = ThumbnailListViewModel.SelectedItem;
 
             base.OnActivate();
-        }
-    }
-
-    public class DelegateCommand : ICommand
-    {
-        public event EventHandler CanExecuteChanged;
-
-        private readonly Action action;
-        private readonly Func<bool> canExecute;
-
-        public DelegateCommand(Action action)
-            : this(action,()=>true)
-        {
-        }
-
-        public DelegateCommand(Action action,Func<bool> canExecute)
-        {
-            this.action = action;
-            this.canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return canExecute();
-        }
-
-        public void Execute(object parameter)
-        {
-            action();
         }
     }
 }
