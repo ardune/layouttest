@@ -111,7 +111,10 @@
     <Compile Include="Features\Shared\State\AppStateBuilder.cs" />
     <Compile Include="Features\Shared\State\AppStateHolder.cs" />
     <Compile Include="Features\Shared\State\Page.cs" />
+    <Compile Include="Features\Shared\State\PageTag.cs" />
+    <Compile Include="Features\Shared\State\PageTagView.cs" />
     <Compile Include="Features\Shared\State\PrepActivity.cs" />
+    <Compile Include="Features\Shared\State\Tag.cs" />
     <Compile Include="StateManagement\IHeldStateBuilder.cs" />
     <Compile Include="StateManagement\StateHolder.cs" />
   </ItemGroup>

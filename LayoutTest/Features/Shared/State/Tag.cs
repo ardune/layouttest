@@ -1,9 +1,9 @@
 ﻿namespace LayoutTest.Features.Shared.State
 {
-    public struct Page
+    public struct Tag
     {
         public int Id { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public string Name { get; set; }
     }
 }

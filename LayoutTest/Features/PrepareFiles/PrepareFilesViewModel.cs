@@ -87,12 +87,12 @@ namespace LayoutTest.Features.PrepareFiles
         {
             await appStateHolder.UpdateState(x =>
             {
-                var newPageNumber = x.Pages.Max(y => (int?)y.PageNumber).GetValueOrDefault(0) + 1;
+                var newPageNumber = x.Pages.Max(y => (int?)y.Id).GetValueOrDefault(0) + 1;
 
                 x.Pages = x.Pages.Concat(Enumerable.Range(0, 1000).Select(i =>
                     new Page
                     {
-                        PageNumber = newPageNumber + i
+                        Id = newPageNumber + i
                     }
                 )).ToArray();
 

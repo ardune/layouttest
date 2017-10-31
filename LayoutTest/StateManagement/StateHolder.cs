@@ -39,11 +39,7 @@ namespace LayoutTest.StateManagement
                 builder.InitializeFrom(nextSubject.Value);
                 //TODO: error handling
                 var newState = updateBlock(builder).Build();
-
-                PlatformProvider.Current.OnUIThreadAsync(() =>
-                {
-                    nextSubject.OnNext(newState);
-                });
+                nextSubject.OnNext(newState);
                 taskCompletionSource.SetResult(Unit.Default);
             }
 

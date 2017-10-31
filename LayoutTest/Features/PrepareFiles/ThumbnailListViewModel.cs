@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -18,7 +19,7 @@ namespace LayoutTest.Features.PrepareFiles
         private List<PageItem> thumbnails;
 
         public ThumbnailListViewModel(AppStateHolder appState)
-        {
+        {;
             this.appState = appState;
         }
 
@@ -29,7 +30,17 @@ namespace LayoutTest.Features.PrepareFiles
                 appState.Project(x => x.Pages)
                     .Subscribe(NewPages),
                 appState.Project(x => x.PrepActivity.PrimaryPageSelectionIndex)
-                    .SubscribeWith(OnPrimaryPageSelectionIndexChanged)
+                    .SubscribeWith(OnPrimaryPageSelectionIndexChanged),
+                appState.CurrentState.Select(state => state.Pages.Select(page => new PageTagView
+                    {
+                        Page = page,
+                        Tags = state.PageTags
+                            .Where(x => x.PageId == page.Id)
+                            .SelectMany(pageTag => state.Tags.Where(tag=>tag.Id == pageTag.TagId))
+                            .ToArray()
+                    }))
+                    .DistinctUntilChanged()
+                    .Subscribe(PagesTest)
             };
             
             if (Execute.InDesignMode)
@@ -66,38 +77,17 @@ namespace LayoutTest.Features.PrepareFiles
 
         private void OnPrimaryPageSelectionIndexChanged(int? i)
         {
-            Trace.WriteLine("OnPrimaryPageSelectionIndexChanged: " + i);
+        }
 
-            var selected = appState.LatestState.PrepActivity.PrimaryPageSelectionIndex;
-            for (var index = 0; index < Thumbnails.Count; index++)
-            {
-                var thumbnail = Thumbnails[index];
-                thumbnail.IsSelected = selected == index;
-            }
+        private void PagesTest(IEnumerable<PageTagView> obj)
+        {
         }
 
         private void NewPages(Page[] obj)
         {
-            Trace.WriteLine("List changed: ");
-            var selected = appState.LatestState.PrepActivity.PrimaryPageSelectionIndex;
-            var newPages = obj.Select((x,i) => new PageItem(x)
-            {
-                IsSelected = i == selected
-            }).ToList();
-            Thumbnails = newPages;
         }
         private void SetDesignValues()
         {
-            var all = Enumerable.Range(96, 120).Select(x => new PageItem
-            {
-                IsSelected = x == 99,
-                PageNumber = x + 1,
-                IsDeleted = (x + 1) % 2 == 0,
-                Select1 = (x + 1) % 4 > 1,
-                Select2 = (x + 1) % 5 > 2
-            });
-
-            Thumbnails = all.ToList();
         }
     }
 }

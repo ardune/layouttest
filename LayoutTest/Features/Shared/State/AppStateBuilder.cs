@@ -9,6 +9,10 @@ namespace LayoutTest.Features.Shared.State
 
         public Page[] Pages { get; set; }
 
+        public Tag[] Tags { get; set; }
+
+        public PageTag[] PageTags { get; set; }
+
         public PrepActivity PrepActivity { get; set; }
 
         public void InitializeFrom(AppState state)
@@ -26,10 +30,8 @@ namespace LayoutTest.Features.Shared.State
             return new AppState
             {
                 Pages = new Page[0],
-                PrepActivity = new PrepActivity
-                {
-                    Foo = true
-                }
+                PageTags = new PageTag[0],
+                Tags = new Tag[0]
             };
         }
 
